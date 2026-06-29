@@ -418,13 +418,8 @@
 <nav class="navbar">
   <div class="nav-inner">
     <a href="#" onclick="showPage('home')" class="nav-logo">
-      <!--
-        LOGO: Tausche den img-Tag gegen dein echtes Logo aus.
-        Lade logo.png in dein GitHub-Repo hoch und nutze:
-        <img src="logo.png" alt="Gasthaus Zahm Logo" />
-        Oder nutze vorerst den Text unten:
-      -->
-      <span class="nav-logo-text">Gasthaus Zahm</span>
+      <img src="logo.png" alt="Gasthaus Zahm Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'" />
+      <span class="nav-logo-text" style="display:none;">Gasthaus Zahm</span>
     </a>
     <div class="nav-links">
       <a href="#" onclick="showPage('speisekarte')" id="nav-speisekarte">Speisekarte</a>
@@ -449,12 +444,7 @@
 
   <!-- HERO -->
   <section class="hero">
-    <!--
-      BILD: Lade hero-interior.png in dein GitHub-Repo hoch.
-      Ersetze dann src="" mit src="hero-interior.png"
-    -->
-    <img src="hero-interior.png" alt="Gasthaus Zahm Interior" class="hero-img"
-         onerror="this.style.display='none'" />
+    <img src="hero.jpg" alt="Gasthaus Zahm Interior" class="hero-img" />
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <p class="hero-eyebrow">Cuisine familiale franco-allemande</p>
@@ -481,12 +471,7 @@
     <div class="container">
       <div class="split">
         <div class="split-img-wrap">
-          <!--
-            BILD: Lade food-dish.png in dein GitHub-Repo hoch.
-            Ersetze dann src="" mit src="food-dish.png"
-          -->
-          <img src="food-dish.png" alt="Hearty Gasthaus Dish"
-               onerror="this.style.background='#d4c9b8';this.style.minHeight='400px'" />
+          <img src="hero.jpg" alt="Gasthaus Zahm" style="aspect-ratio: 4/5; object-fit: cover;" />
           <div class="split-accent"></div>
         </div>
         <div class="split-text">
@@ -627,10 +612,6 @@
   <div class="page-body">
     <div class="reserv-box">
       <div class="reserv-iframe-wrap">
-        <!--
-          Ersetze die URL mit eurem echten Buchungssystem:
-          z.B. OpenTable, Resy, oder euer eigenes System
-        -->
         <iframe src="https://dein-buchungssystem.de/widget" title="Tischreservierung"></iframe>
       </div>
       <div class="reserv-info">
@@ -678,12 +659,7 @@
         </div>
       </div>
       <div class="kontakt-img-wrap">
-        <!--
-          BILD: Lade exterior.png in dein GitHub-Repo hoch.
-          Ersetze dann src="" mit src="exterior.png"
-        -->
-        <img src="exterior.png" alt="Gasthaus Zahm Außenansicht"
-             onerror="this.style.background='#d4c9b8';this.style.minHeight='350px';this.alt=''" />
+        <img src="hero.jpg" alt="Gasthaus Zahm" style="aspect-ratio: 4/3; object-fit: cover;" />
         <div class="kontakt-border"></div>
       </div>
     </div>
@@ -820,14 +796,10 @@
   document.getElementById('year').textContent = new Date().getFullYear();
 
   function showPage(name) {
-    // Hide all pages
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    // Show target
     const target = document.getElementById('page-' + name);
     if (target) target.classList.add('active');
-    // Scroll to top
     window.scrollTo(0, 0);
-    // Update nav active states
     document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
     const navEl = document.getElementById('nav-' + name);
     if (navEl) navEl.classList.add('active');
@@ -841,7 +813,6 @@
     document.getElementById('mobileMenu').classList.remove('open');
   }
 
-  // Handle browser back button
   window.addEventListener('popstate', function(e) {
     if (e.state && e.state.page) showPage(e.state.page);
   });
