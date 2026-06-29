@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gasthaus Zahm – Die Marktwirtschaft seit 1911</title>
+  <meta name="description" content="Gasthaus Zahm – Cuisine familiale franco-allemande in Saarbrücken seit 1911." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f0ebe0;
+      --card: #e8e0d0;
+      --fg: #2a2018;
+      --muted: #7a6e60;
+      --border: #ccc4b4;
+      --primary: #8b2c10;
+      --primary-fg: #f0ebe0;
+      --footer-bg: #2C2623;
+      --footer-fg: #F3F0E7;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Inter', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--fg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4 { font-family: var(--font-serif); font-weight: 500; }
+
+    a { color: inherit; text-decoration: none; }
+
+    img { display: block; max-width: 100%; }
+
+    /* ─── NAVBAR ─── */
+    .navbar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(240,235,224,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 88px;
+    }
+    .nav-logo img { height: 60px; width: auto; }
+    .nav-logo-text {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--primary);
+      letter-spacing: 0.02em;
+    }
+    .nav-links { display: flex; align-items: center; gap: 2rem; }
+    .nav-links a {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--fg);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--primary); }
+    .btn-nav {
+      background: var(--primary);
+      color: var(--primary-fg);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.6rem 1.4rem;
+      transition: opacity 0.2s;
+      border: none; cursor: pointer; font-family: var(--font-sans);
+    }
+    .btn-nav:hover { opacity: 0.85; }
+
+    .hamburger {
+      display: none;
+      background: none; border: none; cursor: pointer;
+      padding: 0.5rem;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--fg); margin: 5px 0;
+      transition: 0.3s;
+    }
+
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+      padding: 1rem 1.5rem 1.5rem;
+      gap: 1rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.5rem 0;
+      color: var(--fg);
+    }
+    .mobile-menu a:hover { color: var(--primary); }
+    .mobile-menu .btn-nav { width: 100%; text-align: center; padding: 0.8rem; }
+
+    /* ─── PAGES ─── */
+    .page { display: none; flex: 1; flex-direction: column; }
+    .page.active { display: flex; }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative;
+      height: 90dvh; min-height: 500px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; text-align: center;
+    }
+    .hero-img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.5);
+    }
+    .hero-content {
+      position: relative; z-index: 1;
+      max-width: 800px; padding: 2rem;
+    }
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .hero h1 {
+      font-size: clamp(3rem, 10vw, 7rem);
+      color: #fff;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .hero-sub {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(1rem, 3vw, 1.5rem);
+      color: #ddd;
+      margin-bottom: 2.5rem;
+    }
+    .hero-btns {
+      display: flex; flex-wrap: wrap;
+      gap: 1rem; justify-content: center;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: var(--primary-fg);
+      padding: 0.85rem 2rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: none; cursor: pointer; font-family: var(--font-sans);
+      transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-outline-white {
+      background: transparent;
+      color: #fff;
+      border: 1px solid #fff;
+      padding: 0.85rem 2rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer; font-family: var(--font-sans);
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-outline-white:hover { background: #fff; color: var(--fg); }
+
+    /* ─── SECTIONS ─── */
+    .section { padding: 5rem 1.5rem; }
+    .section-card { background: var(--card); }
+    .section-primary { background: var(--primary); color: var(--primary-fg); text-align: center; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .container-narrow { max-width: 800px; margin: 0 auto; }
+    .container-text { max-width: 900px; margin: 0 auto; }
+
+    .intro-text { text-align: center; }
+    .intro-text h2 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: var(--primary);
+      margin-bottom: 2rem;
+    }
+    .intro-text p {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 700px;
+      margin: 0 auto 1.5rem;
+    }
+
+    /* ─── SPLIT SECTION ─── */
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .split-img-wrap { position: relative; }
+    .split-img-wrap img { width: 100%; aspect-ratio: 4/5; object-fit: cover; box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+    .split-accent {
+      position: absolute; bottom: -1.5rem; right: -1.5rem;
+      width: 10rem; height: 10rem;
+      background: var(--primary);
+      z-index: -1;
+    }
+    .split-text h2 { font-size: 2.2rem; color: var(--primary); margin-bottom: 1.5rem; }
+    .split-text p { color: var(--muted); line-height: 1.8; margin-bottom: 2rem; }
+    .bullet-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; color: var(--muted); }
+    .bullet-list li { display: flex; align-items: center; gap: 0.75rem; }
+    .bullet-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); flex-shrink: 0; }
+    .link-arrow {
+      color: var(--primary);
+      font-size: 1rem;
+      cursor: pointer;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      margin-top: 1.5rem;
+      background: none; border: none; font-family: var(--font-sans);
+      transition: gap 0.2s;
+    }
+    .link-arrow:hover { gap: 0.75rem; }
+
+    /* ─── INFO SECTION ─── */
+    .info-content h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); margin-bottom: 1rem; }
+    .info-divider { width: 4rem; height: 1px; background: rgba(240,235,224,0.3); margin: 1.5rem auto; }
+    .info-hours { font-family: var(--font-serif); font-size: 1.1rem; line-height: 2; margin-bottom: 2rem; }
+    .btn-outline-primary {
+      background: transparent;
+      color: #fff;
+      border: 1px solid #fff;
+      padding: 0.85rem 2rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer; font-family: var(--font-sans);
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-outline-primary:hover { background: #fff; color: var(--primary); }
+
+    /* ─── INNER PAGES ─── */
+    .page-header {
+      padding: 8rem 1.5rem 3rem;
+      text-align: center;
+    }
+    .page-header h1 { font-size: clamp(2.5rem, 7vw, 4rem); color: var(--primary); }
+    .page-header .subtitle {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin-top: 0.75rem;
+    }
+    .page-body { padding: 2rem 1.5rem 6rem; }
+
+    /* ─── SPEISEKARTE ─── */
+    .menu-section { margin-bottom: 4rem; }
+    .menu-section h2 {
+      font-size: 1.8rem;
+      color: var(--primary);
+      text-align: center;
+      border-bottom: 1px solid rgba(139,44,16,0.2);
+      padding-bottom: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .menu-items { max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem; }
+    .menu-item {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 2rem;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      padding-bottom: 1.5rem;
+    }
+    .menu-item:last-child { border-bottom: none; }
+    .menu-item-name { font-family: var(--font-serif); font-size: 1.1rem; margin-bottom: 0.25rem; }
+    .menu-item-desc { font-size: 0.85rem; color: var(--muted); }
+    .menu-item-price { font-family: var(--font-serif); font-size: 1.1rem; color: var(--primary); white-space: nowrap; }
+
+    .menu-highlight {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 3rem 2rem;
+      margin: 3rem 0;
+      text-align: center;
+    }
+    .menu-highlight h2 { font-size: 2rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .menu-highlight .sub { font-family: var(--font-serif); font-style: italic; color: var(--muted); margin-bottom: 2rem; }
+
+    /* ─── KONTAKT ─── */
+    .kontakt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; max-width: 1100px; margin: 0 auto; }
+    .kontakt-block { margin-bottom: 2.5rem; }
+    .kontakt-block h2 {
+      font-size: 1.4rem;
+      color: var(--primary);
+      border-bottom: 1px solid rgba(139,44,16,0.2);
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .kontakt-block p, .kontakt-block address { font-size: 1rem; line-height: 2; color: var(--fg); font-style: normal; }
+    .kontakt-block a { color: var(--fg); transition: color 0.2s; }
+    .kontakt-block a:hover { color: var(--primary); }
+    .kontakt-block .highlight { color: var(--primary); font-weight: 500; }
+    .kontakt-img-wrap { position: relative; }
+    .kontakt-img-wrap img { width: 100%; aspect-ratio: 4/3; object-fit: cover; box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+    .kontakt-border {
+      position: absolute; bottom: -1rem; left: -1rem;
+      width: 100%; height: 100%;
+      border: 1px solid var(--primary);
+      z-index: -1;
+    }
+
+    /* ─── RESERVIERUNG ─── */
+    .reserv-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      max-width: 900px; margin: 0 auto;
+    }
+    .reserv-iframe-wrap {
+      width: 100%; height: 600px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+    .reserv-iframe-wrap iframe { width: 100%; height: 100%; border: none; }
+    .reserv-info { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; border-top: 1px solid var(--border); padding-top: 2rem; }
+    .reserv-info h3 { font-family: var(--font-serif); font-size: 1.1rem; color: var(--primary); margin-bottom: 0.75rem; }
+    .reserv-info p { font-size: 0.9rem; color: var(--muted); line-height: 1.8; }
+    .reserv-info a { color: var(--fg); font-weight: 500; }
+    .reserv-info a:hover { color: var(--primary); }
+
+    /* ─── LEGAL PAGES ─── */
+    .prose { max-width: 750px; margin: 0 auto; line-height: 1.9; }
+    .prose h1 { font-size: 2.5rem; color: var(--primary); margin-bottom: 2rem; }
+    .prose h2 { font-size: 1.4rem; color: var(--fg); margin: 2.5rem 0 0.75rem; font-family: var(--font-serif); }
+    .prose h3 { font-size: 1.1rem; color: var(--fg); margin: 1.5rem 0 0.5rem; font-family: var(--font-serif); }
+    .prose p { color: var(--muted); margin-bottom: 1rem; }
+    .prose a { color: var(--primary); text-decoration: underline; }
+    .prose strong { color: var(--fg); }
+    .prose table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 1rem 0; }
+    .prose th { background: var(--card); padding: 0.6rem 0.8rem; text-align: left; font-weight: 500; border-bottom: 1px solid var(--border); }
+    .prose td { padding: 0.6rem 0.8rem; border-bottom: 1px solid rgba(0,0,0,0.06); color: var(--muted); }
+    .prose ul { padding-left: 1.5rem; color: var(--muted); margin-bottom: 1rem; }
+    .prose ul li { margin-bottom: 0.4rem; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--footer-bg);
+      color: var(--footer-fg);
+      padding: 4rem 1.5rem;
+    }
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+    }
+    .footer-brand p { font-family: var(--font-serif); font-size: 0.9rem; color: #9a8f80; line-height: 1.8; margin-top: 1rem; }
+    .footer-logo-text {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      color: var(--primary);
+    }
+    .footer-logo img { height: 50px; filter: brightness(0) invert(1); }
+    footer h3 { font-family: var(--font-serif); font-size: 1.1rem; color: var(--primary); margin-bottom: 1.2rem; letter-spacing: 0.03em; }
+    footer address { font-style: normal; font-size: 0.85rem; color: #9a8f80; line-height: 2; }
+    footer nav { display: flex; flex-direction: column; gap: 0.5rem; }
+    footer nav a { font-size: 0.85rem; color: #9a8f80; transition: color 0.2s; }
+    footer nav a:hover { color: var(--primary); }
+    .footer-hours { font-size: 0.85rem; color: #9a8f80; line-height: 2; }
+    .footer-bottom {
+      max-width: 1200px; margin: 2.5rem auto 0;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      font-size: 0.75rem;
+      color: #5a5048;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: block; }
+      .split { grid-template-columns: 1fr; gap: 2rem; }
+      .split-accent { display: none; }
+      .kontakt-grid { grid-template-columns: 1fr; }
+      .kontakt-border { display: none; }
+      .reserv-info { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .footer-inner { grid-template-columns: 1fr; }
+      .hero-btns { flex-direction: column; align-items: center; }
+      .menu-item { flex-direction: column; gap: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════ NAVBAR ═══════════════════════════════════ -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="#" onclick="showPage('home')" class="nav-logo">
+      <!--
+        LOGO: Tausche den img-Tag gegen dein echtes Logo aus.
+        Lade logo.png in dein GitHub-Repo hoch und nutze:
+        <img src="logo.png" alt="Gasthaus Zahm Logo" />
+        Oder nutze vorerst den Text unten:
+      -->
+      <span class="nav-logo-text">Gasthaus Zahm</span>
+    </a>
+    <div class="nav-links">
+      <a href="#" onclick="showPage('speisekarte')" id="nav-speisekarte">Speisekarte</a>
+      <a href="#" onclick="showPage('reservierung')" id="nav-reservierung">Reservierung</a>
+      <a href="#" onclick="showPage('kontakt')" id="nav-kontakt">Kontakt</a>
+      <button class="btn-nav" onclick="showPage('reservierung')">Tisch reservieren</button>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menü">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#" onclick="showPage('speisekarte');closeMenu()">Speisekarte</a>
+    <a href="#" onclick="showPage('reservierung');closeMenu()">Reservierung</a>
+    <a href="#" onclick="showPage('kontakt');closeMenu()">Kontakt</a>
+    <button class="btn-nav" onclick="showPage('reservierung');closeMenu()">Tisch reservieren</button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════ PAGE: HOME ═══════════════════════════════════ -->
+<div class="page active" id="page-home">
+
+  <!-- HERO -->
+  <section class="hero">
+    <!--
+      BILD: Lade hero-interior.png in dein GitHub-Repo hoch.
+      Ersetze dann src="" mit src="hero-interior.png"
+    -->
+    <img src="hero-interior.png" alt="Gasthaus Zahm Interior" class="hero-img"
+         onerror="this.style.display='none'" />
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Cuisine familiale franco-allemande</p>
+      <h1>Gasthaus Zahm</h1>
+      <p class="hero-sub">Die Marktwirtschaft seit 1911</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="showPage('reservierung')">Tisch reservieren</button>
+        <button class="btn-outline-white" onclick="showPage('speisekarte')">Zur Speisekarte</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section class="section">
+    <div class="intro-text">
+      <h2>Herzlich Willkommen</h2>
+      <p>Treten Sie ein in eine Institution der Saarbrücker Gastronomie. Wo sich saarländische Herzlichkeit und französische Raffinesse begegnen, wo Geschichte spürbar ist und der Genuss im Mittelpunkt steht.</p>
+      <p>Ein Ort für ehrliches Essen, gute Gespräche und die feine Art zu leben.</p>
+    </div>
+  </section>
+
+  <!-- SPLIT -->
+  <section class="section section-card">
+    <div class="container">
+      <div class="split">
+        <div class="split-img-wrap">
+          <!--
+            BILD: Lade food-dish.png in dein GitHub-Repo hoch.
+            Ersetze dann src="" mit src="food-dish.png"
+          -->
+          <img src="food-dish.png" alt="Hearty Gasthaus Dish"
+               onerror="this.style.background='#d4c9b8';this.style.minHeight='400px'" />
+          <div class="split-accent"></div>
+        </div>
+        <div class="split-text">
+          <h2>Tradition auf dem Teller</h2>
+          <p>Unsere Speisekarte ist eine Liebeserklärung an unsere Region. Wir servieren saarländische Klassiker, die wir mit französischer Finesse veredeln.</p>
+          <ul class="bullet-list">
+            <li><span class="bullet-dot"></span><span>Sorgfältig ausgewählte regionale Zutaten</span></li>
+            <li><span class="bullet-dot"></span><span>Klassische Zubereitung mit Liebe zum Detail</span></li>
+            <li><span class="bullet-dot"></span><span>Erlesene Weine aus Frankreich und dem Saarland</span></li>
+          </ul>
+          <button class="link-arrow" onclick="showPage('speisekarte')">Speisekarte entdecken →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INFO -->
+  <section class="section section-primary">
+    <div class="info-content">
+      <h2>Wir freuen uns auf Sie</h2>
+      <div class="info-divider"></div>
+      <div class="info-hours">
+        <p>7 Tage die Woche</p>
+        <p>ab 12:00 Uhr geöffnet</p>
+        <p>Küche bis 22:30 Uhr</p>
+      </div>
+      <button class="btn-outline-primary" onclick="showPage('kontakt')">So finden Sie uns</button>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════════════════ PAGE: SPEISEKARTE ══════════════════════════════ -->
+<div class="page" id="page-speisekarte">
+  <div class="page-header">
+    <h1>Speisekarte</h1>
+    <p class="subtitle">Cuisine familiale franco-allemande</p>
+  </div>
+  <div class="page-body">
+    <div class="container">
+
+      <div class="menu-section">
+        <h2>Vorspeisen und kleine Gerichte</h2>
+        <div class="menu-items">
+          <div class="menu-item">
+            <div><div class="menu-item-name">Zahm's Rindertartar</div><div class="menu-item-desc">mit Kapern, Cornichons, Eigelb und Röstbrot</div></div>
+            <div class="menu-item-price">€ 18.50</div>
+          </div>
+          <div class="menu-item">
+            <div><div class="menu-item-name">Französische Zwiebelsuppe</div><div class="menu-item-desc">mit Gruyère überbacken</div></div>
+            <div class="menu-item-price">€ 9.50</div>
+          </div>
+          <div class="menu-item">
+            <div><div class="menu-item-name">Feldsalat</div><div class="menu-item-desc">mit Speck, Krûtons und pochiertem Ei</div></div>
+            <div class="menu-item-price">€ 12.50</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-section">
+        <h2>Hauptspeisen</h2>
+        <div class="menu-items">
+          <div class="menu-item">
+            <div><div class="menu-item-name">Saarländischer Schwenkbraten</div><div class="menu-item-desc">mit Röstzwiebeln und Bratkartoffeln</div></div>
+            <div class="menu-item-price">€ 22.50</div>
+          </div>
+          <div class="menu-item">
+            <div><div class="menu-item-name">Boeuf Bourguignon</div><div class="menu-item-desc">Klassisches Rinderschmorfleisch mit Kartoffelpüree</div></div>
+            <div class="menu-item-price">€ 26.50</div>
+          </div>
+          <div class="menu-item">
+            <div><div class="menu-item-name">Gebratenes Zanderfilet</div><div class="menu-item-desc">auf Rahmsauerkraut mit Rieslingschaum</div></div>
+            <div class="menu-item-price">€ 28.00</div>
+          </div>
+          <div class="menu-item">
+            <div><div class="menu-item-name">Cordon Bleu</div><div class="menu-item-desc">vom Kalb, gefüllt mit Comté und Landschinken, dazu Pommes Frites</div></div>
+            <div class="menu-item-price">€ 29.50</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-highlight">
+        <h2>"Vive la Sarre libre"</h2>
+        <p class="sub">Unsere Hommage an das Saarland</p>
+        <div class="menu-items">
+          <div class="menu-item">
+            <div><div class="menu-item-name">Gefillte (Kartoffelklöße)</div><div class="menu-item-desc">mit Leber- und Blutwurstfüllung, dazu Specksahnesoße und Sauerkraut</div></div>
+            <div class="menu-item-price">€ 19.50</div>
+          </div>
+          <div class="menu-item">
+            <div><div class="menu-item-name">Hoorische</div><div class="menu-item-desc">mit Speckrahm und Apfelkompott</div></div>
+            <div class="menu-item-price">€ 16.50</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-section">
+        <h2>Typisch saarländisch</h2>
+        <div class="menu-items">
+          <div class="menu-item">
+            <div><div class="menu-item-name">Dibbelabbes</div><div class="menu-item-desc">Klassischer saarländischer Kartoffelauflauf mit Speck</div></div>
+            <div class="menu-item-price">€ 17.50</div>
+          </div>
+          <div class="menu-item">
+            <div><div class="menu-item-name">Lyonerpfanne</div><div class="menu-item-desc">Gebratene Lyoner mit Bratkartoffeln und Ei</div></div>
+            <div class="menu-item-price">€ 15.50</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-section">
+        <h2>Desserts &amp; Käse</h2>
+        <div class="menu-items">
+          <div class="menu-item">
+            <div><div class="menu-item-name">Crème Brûlée</div><div class="menu-item-desc">mit echter Vanille</div></div>
+            <div class="menu-item-price">€ 8.50</div>
+          </div>
+          <div class="menu-item">
+            <div><div class="menu-item-name">Mousse au Chocolat</div><div class="menu-item-desc">Klassisch nach Familienrezept</div></div>
+            <div class="menu-item-price">€ 9.00</div>
+          </div>
+          <div class="menu-item">
+            <div><div class="menu-item-name">Auswahl französischer Rohmilchkäse</div><div class="menu-item-desc">mit Feigensenf und Walnüssen</div></div>
+            <div class="menu-item-price">€ 14.50</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ PAGE: RESERVIERUNG ════════════════════════════ -->
+<div class="page" id="page-reservierung">
+  <div class="page-header">
+    <h1>Reservierung</h1>
+    <p class="subtitle">Sichern Sie sich Ihren Tisch</p>
+  </div>
+  <div class="page-body">
+    <div class="reserv-box">
+      <div class="reserv-iframe-wrap">
+        <!--
+          Ersetze die URL mit eurem echten Buchungssystem:
+          z.B. OpenTable, Resy, oder euer eigenes System
+        -->
+        <iframe src="https://dein-buchungssystem.de/widget" title="Tischreservierung"></iframe>
+      </div>
+      <div class="reserv-info">
+        <div>
+          <h3>Probleme bei der Online-Buchung?</h3>
+          <p>Gerne nehmen wir Ihre Reservierung auch telefonisch entgegen:<br />
+          <a href="tel:068192569905">0681 – 925 699 05</a></p>
+        </div>
+        <div>
+          <h3>Öffnungszeiten</h3>
+          <p>7 Tage die Woche<br />ab 12:00 Uhr geöffnet<br />Küche bis 22:30 Uhr</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ PAGE: KONTAKT ════════════════════════════════ -->
+<div class="page" id="page-kontakt">
+  <div class="page-header">
+    <h1>Kontakt</h1>
+    <p class="subtitle">Wir freuen uns auf Ihren Besuch</p>
+  </div>
+  <div class="page-body">
+    <div class="kontakt-grid">
+      <div>
+        <div class="kontakt-block">
+          <h2>Adresse</h2>
+          <address>
+            <strong>Gasthaus Zahm</strong><br />
+            Saarstraße 6<br />
+            66111 Saarbrücken
+          </address>
+        </div>
+        <div class="kontakt-block">
+          <h2>Kontaktieren Sie uns</h2>
+          <p>Telefon: <a href="tel:068192569905">0681 – 925 699 05</a></p>
+          <p>E-Mail: <a href="mailto:info@gasthaus-zahm.de">info@gasthaus-zahm.de</a></p>
+        </div>
+        <div class="kontakt-block">
+          <h2>Öffnungszeiten</h2>
+          <p class="highlight">7 Tage die Woche</p>
+          <p>ab 12:00 Uhr geöffnet</p>
+          <p>Küche bis 22:30 Uhr</p>
+        </div>
+      </div>
+      <div class="kontakt-img-wrap">
+        <!--
+          BILD: Lade exterior.png in dein GitHub-Repo hoch.
+          Ersetze dann src="" mit src="exterior.png"
+        -->
+        <img src="exterior.png" alt="Gasthaus Zahm Außenansicht"
+             onerror="this.style.background='#d4c9b8';this.style.minHeight='350px';this.alt=''" />
+        <div class="kontakt-border"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ PAGE: IMPRESSUM ═════════════════════════════ -->
+<div class="page" id="page-impressum">
+  <div class="page-header" style="text-align:left;padding-left:2rem;">
+    <h1 style="font-size:2rem;">Impressum</h1>
+  </div>
+  <div class="page-body">
+    <div class="prose">
+      <h2>Angaben gemäß § 5 TMG:</h2>
+      <p>Gasthaus Zahm Gaststätten Betriebs-GmbH<br />Saarstraße 6<br />66111 Saarbrücken</p>
+      <p><strong>Vertreten durch:</strong> Jürgen Petry</p>
+      <h2>Kontakt:</h2>
+      <p>Telefon: 0681 – 925 699 05<br />E-Mail: info@gasthaus-zahm.de</p>
+      <p>Steuernummer: 040 / 106 / 00826<br />Ust.-ID-Nummer: DE248627980</p>
+      <p>Handelsregister Saarbrücken HRB 15542</p>
+      <p><strong>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV:</strong> Jürgen Petry</p>
+      <h2>Streitschlichtung</h2>
+      <p>Wir sind nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+      <h2>Haftung für Inhalte</h2>
+      <p>Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen.</p>
+      <h2>Haftung für Links</h2>
+      <p>Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter verantwortlich.</p>
+      <h2>Urheberrecht</h2>
+      <p>Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════ PAGE: DATENSCHUTZ ══════════════════════════════ -->
+<div class="page" id="page-datenschutz">
+  <div class="page-header" style="text-align:left;padding-left:2rem;">
+    <h1 style="font-size:2rem;">Datenschutzerklärung</h1>
+  </div>
+  <div class="page-body">
+    <div class="prose">
+      <h2>1. Datenschutz auf einen Blick</h2>
+      <p>Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie unsere Website besuchen.</p>
+      <h2>2. Verantwortliche Stelle</h2>
+      <p>Gasthaus Zahm Gaststätten Betriebs-GmbH<br />Jürgen Petry<br />Saarstraße 6<br />66111 Saarbrücken<br />Telefon: 0681 – 925 699 05<br />E-Mail: info@gasthaus-zahm.de</p>
+      <h2>3. Datenerfassung auf unserer Website</h2>
+      <h3>Server-Log-Dateien</h3>
+      <p>Der Provider der Seiten erhebt und speichert automatisch Informationen in so genannten Server-Log-Dateien, die Ihr Browser automatisch an uns übermittelt (Browsertyp, Betriebssystem, IP-Adresse, Uhrzeit).</p>
+      <h3>Cookies</h3>
+      <p>Weitere Informationen finden Sie in unseren <a href="#" onclick="showPage('cookies')">Cookie-Informationen</a>.</p>
+      <h3>Google Analytics</h3>
+      <p>Diese Website nutzt Google Analytics mit aktivierter IP-Anonymisierung. Wir haben einen Vertrag zur Auftragsdatenverarbeitung mit Google abgeschlossen.</p>
+      <h2>4. Ihre Rechte</h2>
+      <p>Sie haben jederzeit das Recht auf Auskunft, Berichtigung, Sperrung oder Löschung Ihrer gespeicherten personenbezogenen Daten. Wenden Sie sich dazu an: info@gasthaus-zahm.de</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════ PAGE: COOKIES ══════════════════════════════════ -->
+<div class="page" id="page-cookies">
+  <div class="page-header" style="text-align:left;padding-left:2rem;">
+    <h1 style="font-size:2rem;">Cookie-Informationen</h1>
+  </div>
+  <div class="page-body">
+    <div class="prose">
+      <p>Diese Webseite verwendet Cookies, um Inhalte zu personalisieren und die Zugriffe auf unsere Website zu analysieren.</p>
+      <h2>Notwendig (1)</h2>
+      <table>
+        <thead><tr><th>Name</th><th>Anbieter</th><th>Zweck</th><th>Speicherdauer</th></tr></thead>
+        <tbody><tr><td>CookieConsent</td><td>Cookiebot</td><td>Speichert den Zustimmungsstatus für Cookies.</td><td>1 Jahr</td></tr></tbody>
+      </table>
+      <h2>Statistiken (2)</h2>
+      <table>
+        <thead><tr><th>Name</th><th>Anbieter</th><th>Zweck</th><th>Speicherdauer</th></tr></thead>
+        <tbody>
+          <tr><td>_ga</td><td>Google</td><td>Registriert eine eindeutige ID für statistische Daten.</td><td>2 Jahre</td></tr>
+          <tr><td>_ga_#</td><td>Google</td><td>Von Google Analytics verwendet.</td><td>2 Jahre</td></tr>
+        </tbody>
+      </table>
+      <h2>Marketing (6)</h2>
+      <table>
+        <thead><tr><th>Name</th><th>Anbieter</th><th>Zweck</th><th>Speicherdauer</th></tr></thead>
+        <tbody>
+          <tr><td>__vt</td><td>Tripadvisor</td><td>Verknüpft Präferenzen mit der TripAdvisor-Website.</td><td>1 Tag</td></tr>
+          <tr><td>ServerPool</td><td>Tripadvisor</td><td>Anzeige von eingebetteten TripAdvisor-Inhalten.</td><td>Sitzung</td></tr>
+          <tr><td>TACds</td><td>Tripadvisor</td><td>Anzeige von eingebetteten TripAdvisor-Inhalten.</td><td>2 Monate</td></tr>
+          <tr><td>TADCID</td><td>Tripadvisor</td><td>Anzeige von eingebetteten TripAdvisor-Inhalten.</td><td>10 Jahre</td></tr>
+          <tr><td>TASession</td><td>Tripadvisor</td><td>Anzeige von eingebetteten TripAdvisor-Inhalten.</td><td>Sitzung</td></tr>
+          <tr><td>TAUnique</td><td>Tripadvisor</td><td>Anzeige von eingebetteten TripAdvisor-Inhalten.</td><td>2 Jahre</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ FOOTER ══════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo-text">Gasthaus Zahm</div>
+      <p>Die Marktwirtschaft seit 1911.<br />Cuisine familiale franco-allemande.</p>
+    </div>
+    <div>
+      <h3>Kontakt</h3>
+      <address>
+        Saarstraße 6<br />
+        66111 Saarbrücken<br /><br />
+        0681 – 925 699 05<br />
+        info@gasthaus-zahm.de
+      </address>
+    </div>
+    <div>
+      <h3>Öffnungszeiten</h3>
+      <div class="footer-hours">
+        7 Tage die Woche<br />
+        ab 12:00 Uhr<br />
+        Küche bis 22:30 Uhr
+      </div>
+    </div>
+    <div>
+      <h3>Rechtliches</h3>
+      <nav>
+        <a href="#" onclick="showPage('impressum')">Impressum</a>
+        <a href="#" onclick="showPage('datenschutz')">Datenschutz</a>
+        <a href="#" onclick="showPage('cookies')">Cookie-Informationen</a>
+      </nav>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; <span id="year"></span> Gasthaus Zahm Gaststätten Betriebs-GmbH. Alle Rechte vorbehalten.</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  function showPage(name) {
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    // Show target
+    const target = document.getElementById('page-' + name);
+    if (target) target.classList.add('active');
+    // Scroll to top
+    window.scrollTo(0, 0);
+    // Update nav active states
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    const navEl = document.getElementById('nav-' + name);
+    if (navEl) navEl.classList.add('active');
+  }
+
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+
+  function closeMenu() {
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
+
+  // Handle browser back button
+  window.addEventListener('popstate', function(e) {
+    if (e.state && e.state.page) showPage(e.state.page);
+  });
+</script>
+</body>
+</html>
